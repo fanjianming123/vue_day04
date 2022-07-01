@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>选你爱我求和</h2>
-    <div v-for="item in arr" :key="item">
+    <div v-for="item in arr" :key="item" style="display:inline-block">
       {{ item }}
       <input type="checkbox" v-model="checkNumArr" :value="item" />
     </div>
