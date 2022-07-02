@@ -32,7 +32,7 @@
             v-model="item.count"
             style="width: 50%; font-size: 18px"
           ></el-input>
-          <el-button plain @click="add(item)">+</el-button>
+          <el-button plain @click="item.count++" ref="add">+</el-button>
         </td>
         <td>￥{{ (item.count * item.bookPrice).toFixed(2) }}</td>
         <td>
@@ -126,9 +126,6 @@ export default {
       if (ele.count <= 1) return
       return ele.count--
     },
-    add(ele) {
-      return ele.count++
-    },
     delBook(id) {
       this.bookList = this.bookList.filter((item) => item.id !== id)
     },
@@ -137,13 +134,6 @@ export default {
     },
     delChecked() {
       this.bookList = this.bookList.filter((item) => item.c !== true)
-    },
-    countBlur(e) {
-      console.log(e)
-      if (!e.target.value) {
-        this.add()
-        return alert('商品数量输入不能为空')
-      }
     },
   },
 }
