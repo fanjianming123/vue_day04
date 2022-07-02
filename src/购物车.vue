@@ -31,6 +31,7 @@
             @blur="countBlur"
             :min="1"
             label="描述文字"
+            clearable='false'
           ></el-input-number>
         </td>
         <td>￥{{ (item.count * item.bookPrice).toFixed(2) }}</td>
