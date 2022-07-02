@@ -118,8 +118,8 @@
               />全选
             </div>
             <div class="operation">
-              <a href="javascript:;" class="remove-batch"> 删除选中的商品</a>
-              <a href="javascript:;" class="clear-all">清理购物车</a>
+              <a href="javascript:;" class="remove-batch" @click="delFn"> 删除选中的商品</a>
+              <a href="javascript:;" class="clear-all" @click="clearFn">清理购物车</a>
             </div>
             <div class="toolbar-right">
               <div class="amount-sum">
@@ -306,6 +306,11 @@ export default {
     del(val) {
       this.booklist = this.booklist.filter((ele) => ele.id != val);
     },
+    delFn(){
+    },
+    clearFn(){
+      this.booklist = []
+    }
   },
   computed: {
     isAll: {
