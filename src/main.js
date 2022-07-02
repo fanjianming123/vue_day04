@@ -2,6 +2,9 @@ import Vue from 'vue';
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.css'; // 默认找文件夹下的index文件(但是这个不是所以需要写路径)
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 new Vue({

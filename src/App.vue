@@ -1,118 +1,144 @@
 <template>
-  <el-container>
-    <el-header>
-      <th style="width: 10%">
-        <el-checkbox v-model="checked">全选</el-checkbox>
-      </th>
-      <th style="width: 33%">商品</th>
-      <th>单价</th>
-      <th>数量</th>
-      <th>小计</th>
-      <th>操作</th>
-    </el-header>
-    <el-main>
+  <div id="app">
+    <table class="tb">
       <tr>
-        <td style="width: 10%">
-          <el-checkbox v-model="checked"></el-checkbox>
-        </td>
-        <td style="width: 35%;display: flex;align-items: center;">
-          <el-image
-            style="width: 100px; height: 100px;">
-            :src="url"
-            :fit="fit"
-          ></el-image>
-          <p>
-            【5本26.8元】经典儿童文学彩图青少版 八十天环游地球中学生语文教学大纲
-          </p>
-        </td>
-        <td>￥12.60</td>
-        <td>
-          <el-input-number
-            v-model="num"
-            @change="handleChange"
-            :min="1"
-            :max="10"
-            label="描述文字"
-          ></el-input-number>
-        </td>
-        <td>￥63.00</td>
-        <td><a href="javascript:;">删除</a></td>
+        <th><input type="checkbox" v-model="checked" />全选</th>
+        <th>商品</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>小记</th>
+        <th>操作</th>
       </tr>
-    
-    </el-main>
-    <el-footer>
-      <div class="left-footer">
-        <el-checkbox v-model="checked"></el-checkbox>
-        <el-button type="info" plain style="margin:0 20px">删除选中商品</el-button>
-        <el-button type="warning" plain>清理购物车</el-button>
-      </div>
-      <div class="right-footer" style="display: flex">
-        <span>已经选7件商品</span>
-        <span style="margin:0 20px">商品总价：￥117.60</span>
-        <el-button type="danger" style="width:200px;">结算</el-button>
-      </div>
-    </el-footer>
-  </el-container>
+      <!-- 循环渲染的元素tr -->
+      <tr v-for="item in list" :key="item.id">
+        <td><input type="checkbox" v-model="item.c" /></td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.price }}万</td>
+        <td>
+          <button @click="delFn(item.id)">-</button
+          ><input
+            type="text"
+            style="text-align: center"
+            v-model="item.num"
+          /><button @click="addFn(item.id)">+</button>
+        </td>
+        <td>{{ item.num * item.price }}万</td>
+        <td><button @click="del(item.id)">删除</button></td>
+      </tr>
+      <tr v-if="list.length === 0">
+        <td colspan="4">没有数据咯~</td>
+      </tr>
+    </table>
+    <br />
+    <button @click="del">删除选中商品</button>
+    <button @click="delAll">清理购物车</button>
+    <br />
+    <div style="margin-top: 20px">
+      <h2>统计</h2>
+      <p>已经选中商品件数{{ allNum }}</p>
+      <p>总价{{ alNumPrice }}</p>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      checked: true,
-      url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
-    }
+      list: [
+        {
+          id: 1,
+          name: '奔驰',
+          price: 10,
+          num: 1,
+          time: '2020-08-01',
+          c: false,
+        },
+        {
+          id: 2,
+          name: '宝马',
+          price: 10,
+          num: 1,
+          time: '2020-08-02',
+          c: false,
+        },
+        {
+          id: 3,
+          name: '奥迪',
+          price: 10,
+          num: 1,
+          time: '2020-08-03',
+          c: false,
+        },
+      ],
+      c: false,
+    };
   },
-}
+  methods: {
+    del() {
+      this.list = this.list.filter((ele) => ele.c != true);
+    },
+    addFn(val) {
+      const index = this.list.findIndex((ele) => ele.id == val);
+      this.list[index].num++;
+    },
+    delFn(val) {
+      const index = this.list.findIndex((ele) => ele.id == val);
+      this.list[index].num--;
+    },
+    delAll() {
+      this.list.splice(0, this.list.length);
+    },
+  },
+  computed: {
+    checked: {
+      set(val) {
+        this.list.forEach((ele) => (ele.c = val));
+      },
+      get() {
+        return this.list.every((ele) => ele.c);
+      },
+    },
+    allNum() {
+      return this.list.reduce((sum, cur) => {
+        return (sum += cur.c ? cur.num : 0);
+      }, 0);
+    },
+    alNumPrice() {
+      return this.list.reduce((sum, cur) => {
+        return (sum += cur.c ? cur.num * cur.price : 0);
+      }, 0);
+    },
+  },
+};
 </script>
 
 <style>
-.el-header,
-.el-footer {
-  background-color: #b3c0d1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-  display: flex;
-  justify-content: space-evenly;
-}
-.el-footer {
-  display: flex;
-  justify-content: space-between;
-}
-.el-aside {
-  background-color: #d3dce6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
+#app {
+  width: 600px;
+  margin: 10px auto;
 }
 
-.el-main {
-  background-color: #e9eef3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
+.tb {
+  border-collapse: collapse;
+  width: 100%;
 }
-tr {
-  display: flex;
-  justify-content: space-evenly;
-  background-color: #a6c8ea;
+
+.tb th {
+  background-color: #0094ff;
+  color: white;
+}
+
+.tb td,
+.tb th {
+  padding: 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.add {
+  padding: 5px;
+  border: 1px solid black;
   margin-bottom: 10px;
-}
-th,
-td{
-  width: 10%;
-}
-body > .el-container {
-  margin-bottom: 40px;
-}
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
 }
 </style>
