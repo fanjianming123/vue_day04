@@ -18,7 +18,7 @@
             a() {
                 console.log(this.a);  //此处this.a指向整个函数体
                 setTimeout(function () {
-                    console.log(this.a);//undefined
+                    console.log(this.a);//undefined  window里没有a
                 }, 1000);
             },
             b() {
