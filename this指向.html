@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function fn() {
+            console.log(this); //此处普通函数指向window
+        }
+        const obj = {
+            name: "test",
+            a() {
+                console.log(this.a);  //此处this.a指向整个函数体
+                setTimeout(function () {
+                    console.log(this.a);//undefined
+                }, 1000);
+            },
+            b() {
+                console.log(this);//指向调用者
+                fn();
+            },
+        };
+        obj.a();
+        obj.b();
+    </script>
+</body>
+
+</html>
